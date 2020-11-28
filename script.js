@@ -94,7 +94,7 @@ setInterval(()=>{
         console.log('-----------------NEW STATE---------------------');
         matrix1.forEach(row=>console.log(row.toString()));
     }
-},3000)
+},1000)
 
 
 

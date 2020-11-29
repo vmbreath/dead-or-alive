@@ -4,11 +4,13 @@ const pathFromConsole = process.argv;
 let data = fs.readFileSync(pathFromConsole[2]);
 let matrix1 = Object.values(JSON.parse(data));
 let matrix2= Object.values(JSON.parse(data));
-const rows = matrix1.length;
-const columns = matrix1[0].length;
 
+//Функция findNearestCells находит для каждой клетки количество живых соседей и передает его в функцию newCellState
 const findNearestCells = (column,row,currentMatrix,nextMatrix) =>{
     let counter = 0;
+    const rows = currentMatrix.length;
+    const columns = currentMatrix[0].length;
+
     //левая верхняя
     if (row!==0 && column!==0){
         if (currentMatrix[row-1][column-1]===1){
@@ -57,9 +59,11 @@ const findNearestCells = (column,row,currentMatrix,nextMatrix) =>{
             counter++;
         }
     }
-    newMatrixFormer(column,row,counter,currentMatrix,nextMatrix);
+    newCellState(column,row,counter,currentMatrix,nextMatrix);
 }
-const newMatrixFormer = (column,row,cellsCounter,currentMatrix,nextMatrix) =>{
+
+//Функция newMatrixFormer записывает новое значение клетки в массив nextMatrix
+const newCellState = (column,row,cellsCounter,currentMatrix,nextMatrix) =>{
     if (currentMatrix[row][column]===1){
         if (cellsCounter===2 || cellsCounter===3){
             nextMatrix[row][column]=1;
@@ -74,6 +78,8 @@ const newMatrixFormer = (column,row,cellsCounter,currentMatrix,nextMatrix) =>{
         }
     }
 }
+
+//Функция formNewArray перебирает массив клеток currentMatrix и создает новый массив nextMatrix
 const formNewArray = (currentMatrix,nextMatrix) =>{
     for (let row=0;row<currentMatrix.length;row++) {
         for (let column=0;column<currentMatrix[row].length;column++){
@@ -81,6 +87,8 @@ const formNewArray = (currentMatrix,nextMatrix) =>{
         }
     }
 }
+
+//Запускается вывод новых значений доски в консоль
 let switcher=true;
 setInterval(()=>{
     if(switcher){
@@ -94,7 +102,7 @@ setInterval(()=>{
         console.log('-----------------NEW STATE---------------------');
         matrix1.forEach(row=>console.log(row.toString()));
     }
-},3000)
+},1000)
 
 
 
